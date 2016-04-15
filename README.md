@@ -1,7 +1,7 @@
 # stalker-pattern
 ![stalker-pattern NPM package information](https://nodei.co/npm/stalker-pattern.png "stalker-pattern NPM package information")
 
-![stalker-pattern travis-CI build](https://travis-ci.org/carlosouro/stalker-pattern.svg "stalker-pattern travis-CI build") ![stalker-pattern test coverage](https://coveralls.io/repos/carlosouro/stalker-pattern/badge.svg "stalker-pattern test coverage")
+![stalker-pattern travis-CI build](https://travis-ci.org/carlosouro/stalker-pattern.svg "stalker-pattern travis-CI build") ![stalker-pattern coverage status](https://coveralls.io/repos/github/carlosouro/stalker-pattern/badge.svg?branch=master "stalker-pattern coverage status")
 
 Stalker-pattern is a Javascript pattern with a promise-like syntax streaming but in which the whole stream is re-triggerable like an event. Additionally it also supports synchronous triggering.
 
