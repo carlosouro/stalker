@@ -1,0 +1,36 @@
+{
+  "name": "stalker-pattern",
+  "description": "Stalker is Javascript pattern with a promise-like syntax streaming but in which the whole stream is re-triggerable like an event.",
+  "version": "0.0.1",
+  "homepage": "",
+  "author": {
+    "name": "Carlos Ouro"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carlosouro/stalker-pattern.git"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha test/tests.js --reporter dot",
+    "test-coverage": "YOURPACKAGE_COVERAGE=1 ./node_modules/mocha/bin/mocha test/tests.js --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js",
+    "local-test": "./node_modules/mocha/bin/mocha test/tests.js --reporter spec",
+    "local-test-coverage": "YOURPACKAGE_COVERAGE=1 ./node_modules/mocha/bin/mocha test/tests.js --reporter html-cov > temp/cov.html ; open temp/cov.html"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "blanket": "^1.1.6",
+    "coveralls": "^2.11.2",
+    "mocha-lcov-reporter": "0.0.1"
+  },
+  "license": "MIT",
+  "main": "stalker.js",
+  "engines": {
+    "node": ">= 0.10"
+  },
+  "keywords": [
+    "stalker",
+    "pattern",
+    "promises",
+    "events"
+  ]
+}
