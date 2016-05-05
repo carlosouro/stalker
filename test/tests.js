@@ -427,4 +427,87 @@ describe('stalker', function(){
 
   });
 
+  it('piping through .first()', function(done){
+    var trigger;
+    new Stalker(function(t){
+        trigger=t;
+    }).first().follow(function(val){
+      assert(val)
+    });
+
+    trigger(true)
+    trigger(false)
+
+    done();
+
+  });
+
+  it('piping through .the(nthTime)', function(done){
+    var trigger, times=0;
+    new Stalker(function(t){
+        trigger=t;
+    }).the(3).follow(function(val){
+      times++;
+      assert(val)
+    });
+
+    trigger(false)
+    trigger(false)
+    trigger(true)
+    trigger(false)
+
+    done();
+
+  });
+
+  it('piping through .from(nthTime).to(nthTime)', function(done){
+    var trigger, times=0;
+    new Stalker(function(t){
+        trigger=t;
+    }).from(2).to(5).follow(function(val){
+      times++;
+      assert(val)
+    });
+
+    trigger(false)
+    trigger(true)
+    trigger(true)
+    trigger(true)
+    trigger(true)
+    trigger(false)
+    assert.equal(times, 4)
+
+    done();
+
+  });
+
+  it('should pipe as in readme', function(done){
+    var res = '';
+    new Stalker(function(trigger){
+
+      trigger(1);
+      trigger(2);
+      trigger(3);
+      trigger(4);
+
+    }).from(1).to(3).follow(function(number){
+
+      res+=number; //prints 1,2,3
+      return number;
+
+    }).the(2).follow(function(number){
+
+      res+=number; //prints 2
+      return number;
+
+    }).first().follow(function(number){
+
+      res+=number; //prints 2
+
+    });
+
+    assert.equal(res, '12322');
+    done();
+  })
+
 });

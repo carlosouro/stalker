@@ -18,17 +18,26 @@
 
   // Stalker-pattern - by Carlos Ouro
 
+  // helper - delete piping functions
+  function deletePipes(obj, deleteTo){
+    delete obj.first;
+    delete obj.from;
+    delete obj.the;
+    if(deleteTo) delete obj.to;
+  }
+
   // Note: logging functionality is commented out for performance reasons,
   // if needed uncomment and pass in a logging method (eg. console.log.bind(console) )
 
   // main stalker class
   var Stalker = function(initialise, name /*, logger*/ ){
 
-    var self = this, pending = [], sync = true, nameStr = name ? "\""+name+"\" " : "";
+    var self = this, pending = [], sync = true, nameStr = name ? "\""+name+"\" " : "", occurrences = 0;
 
     Object.defineProperty(this, "stalker-pattern:instance-name", {value:name})
-
     Object.defineProperty(this, "stalker-pattern:enabled", {value:true})
+    Object.defineProperty(this, "stalker-pattern:first", {value:1, writable:true})
+    Object.defineProperty(this, "stalker-pattern:last", {value:Infinity, writable:true})
 
     // trigger() - pushes the result in the queue and, on async use,
     // fires push logic to follow callback
@@ -60,19 +69,23 @@
         item = pending.shift();
         //console.log('firing ', item)
 
-        // check if Stalker instance
-        if(item && item["stalker-pattern:enabled"]){
-          // protect against anti-pattern use
-          if(!item.follow){
-            throw new Error("Stalker "+nameStr+"error: you've used trigger(stalkerInstance) which already has a .follow() assigned");
+        occurrences++;
+        if(occurrences>=self["stalker-pattern:first"] && occurrences<= self["stalker-pattern:last"]){
+          // check if Stalker instance
+          if(item && item["stalker-pattern:enabled"]){
+            // protect against anti-pattern use
+            if(!item.follow){
+              throw new Error("Stalker "+nameStr+"error: you've used trigger(stalkerInstance) which already has a .follow() assigned");
+            }
+            // follow the result of the given stalker instance with a re-trigger on
+            // this instance (ability to follow indefinetely)
+            item.follow(trigger);
+          } else {
+            // trigger follow
+            self["stalker-pattern:follow-cb"] && self["stalker-pattern:follow-cb"](item)
           }
-          // follow the result of the given stalker instance with a re-trigger on
-          // this instance (ability to follow indefinetely)
-          item.follow(trigger);
-        } else {
-          // trigger follow
-          self["stalker-pattern:follow-cb"] && self["stalker-pattern:follow-cb"](item)
         }
+
       }
 
     }
@@ -86,7 +99,8 @@
         throw new Error("Stalker "+nameStr+"error: .follow() method only works in the context of the declared instance.");
       }
 
-      // the current instance can no longer be followed
+      // the current instance can no longer be followed or piped
+      deletePipes(this, true);
       delete this.follow;
 
       var followName = (this["stalker-pattern:instance-name"] || 'anonymous')+'.follow';
@@ -121,6 +135,29 @@
     // if(logger) logger("finished "+name)
     sync=false;
   }
+
+  Stalker.prototype.first = function() {
+    this["stalker-pattern:first"]=1;
+    this["stalker-pattern:last"]=1;
+    deletePipes(this, true);
+    return this;
+  };
+  Stalker.prototype.the = function(time) {
+    this["stalker-pattern:first"]=time;
+    this["stalker-pattern:last"]=time;
+    deletePipes(this, true);
+    return this;
+  };
+  Stalker.prototype.from = function(time) {
+    this["stalker-pattern:first"]=time;
+    deletePipes(this);
+    return this;
+  };
+  Stalker.prototype.to = function(time) {
+    this["stalker-pattern:last"]=time;
+    deletePipes(this, true);
+    return this;
+  };
 
   return Stalker;
 }));
