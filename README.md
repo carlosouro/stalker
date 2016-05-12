@@ -52,6 +52,9 @@ var myStalker = new Stalker(function(trigger){
 
 });
 
+```
+
+
 ### <a name="basics"></a>Piping only a few occurrences
 
 ```JavaScript
@@ -81,8 +84,8 @@ new Stalker(function(trigger){
 //stack prints:
 //1, 2, 3, 2, 2
 
-//Note: in the case above "1","2","3" all fire in the first follow()
-//before "2" is propagated down to the 2nd follow()
-//this is the default behaviour of Stalker for syncrounous triggering
-
 ```
+
+**Note:**
+In the case above _"1","2","3"_ all fire in the first _follow()_ before _"2"_ is propagated down to the 2nd _follow()_.
+This is the default behaviour of Stalker for syncrounous triggering
