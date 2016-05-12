@@ -1,7 +1,7 @@
 {
   "name": "stalker-pattern",
   "description": "Stalker is Javascript pattern with a promise-like syntax streaming but in which the whole stream is re-triggerable like an event.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "",
   "author": {
     "name": "Carlos Ouro"
